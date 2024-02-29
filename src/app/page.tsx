@@ -1,95 +1,111 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client'
+
+import Container from "@/components/Container/Container";
+import GifCard from "@/components/GifCard/GifCardMedium";
+import { palette } from "@/styles/palette";
+import styled from "styled-components";
+import SearchBar from "./gif/Search/SearchBar";
+import GIfCardSmall from "@/components/GifCard/GifCardSmall";
+import { useEffect, useState } from "react";
+import { IGif } from "@/models/IGif";
+import Layout from "react-masonry-list";
+import Loader from "@/components/Loader/Loader";
+import GifCardHOC from "@/components/GifCard/GifCardHOC";
 
 export default function Home() {
+
+  const [gifs, setGifs] = useState<IGif[]>([]);
+  const [page, setPage] = useState(0);
+  const [isEndScroll, setIsEndScroll] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const scrollHandler = (e: any) => {
+    if(e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop - window.innerHeight) < 1407){
+      setIsEndScroll(true);
+    }
+    console.log(e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop - window.innerHeight))
+
+  }
+
+  useEffect(() => {
+    if(isEndScroll && page < 10 && !isLoading){
+      setIsLoading(true);
+      fetch(`https://api.giphy.com/v1/gifs/trending?api_key=POGUl80ahoJ570t8zeTaHqAQawZ4F8RC&limit=25&offset=${page*25}&rating=g&bundle=messaging_non_clips`)
+        .then(res => res.json())
+          .then(res => {
+            setGifs([...gifs, ...res.data]);
+            setPage(pv => pv + 1);
+            setIsEndScroll(false);
+            setIsLoading(false);
+          })
+    }
+  }, [isEndScroll])
+
+  useEffect(() => {
+    addEventListener('scroll', scrollHandler);
+
+    return () => {
+      removeEventListener('scroll', scrollHandler);
+    }
+  }, [])
+
+  const [selectedSize, setSelectedSize] = useState<'small' | 'medium' | 'large'>('small');
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+    <Main>
+      <Container>
+        <MainInner>
+          <SearchBar
+            onChangeSize={(size: 'small' | 'medium' | 'large') => setSelectedSize(size)} />
+          <Masonry 
+            colCount={5}
+            gap={20}
+            items={gifs.map(gif => 
+              <GifCardHOC 
+                key={gif.id} 
+                size={selectedSize}
+                title={gif.title}
+                id={gif.id} /> )} />
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+        </MainInner>
+        {
+          page < 10
+            && <Loader />
+        }
+      </Container>
+    </Main>
   );
 }
+
+const Masonry = styled(Layout)`
+  margin: 0;
+  padding: 0;
+
+  grid-template-columns: repeat(5, minmax(100px, 1fr)) !important;
+`
+
+// const GifList = styled.div`
+//     display: grid;
+//     grid-template-columns: repeat(5, 1fr);
+//     grid-template-rows: masonry;
+//     justify-tracks: endnpm install react-masonry-list --save;
+//     grid-auto-flow: dense;
+//     grid-gap: 10px;
+// `
+
+const MainInner = styled.div`
+  display: flex;
+  gap: 30px;
+  flex-direction: column;
+  align-items: center;
+  margin: 30px 0;
+`
+
+const Main = styled.main`
+  height: 100vh;
+  color: ${palette.textColor};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+`
