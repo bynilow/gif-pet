@@ -1,13 +1,13 @@
+import { IGif } from '@/models/IGif';
 import { palette } from '@/styles/palette';
 import { FC, useRef, useState } from 'react';
 import styled from 'styled-components'
 
 interface IGIfCardSmallProps {
-    id: string;
-    title: string;
+    gif: IGif
 }
 
-const GIfCardSmall: FC<IGIfCardSmallProps> = ({id, title}) => {
+const GIfCardSmall: FC<IGIfCardSmallProps> = ({gif}) => {
 
     return (  
         <Card>
@@ -15,9 +15,9 @@ const GIfCardSmall: FC<IGIfCardSmallProps> = ({id, title}) => {
                 {palette.favoriteSymbol}
             </Favorite>
             <Title>
-                {title}
+                {gif.title}
             </Title>
-            <Gif src={`https://i.giphy.com/${id}.webp`} alt='' />
+            <Gif src={`https://i.giphy.com/${gif.id}.webp`} alt='' />
         </Card>
     );
 }

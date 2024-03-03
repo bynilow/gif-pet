@@ -34,11 +34,11 @@ const Switch: FC<ISwitchProps> = ({onChange}) => {
                 isSelected={selectedOption === 1}>
                 M
             </Option>
-            {/* <Option
+            <Option
                 onClick={() => onChangeOption(2)}
                 isSelected={selectedOption === 2}>
                 L
-            </Option> */}
+            </Option>
         </Block>
     );
 }
@@ -86,8 +86,8 @@ const Block = styled.div<IBlockProps>`
         content: '';
         position: absolute;
         top: 0;
-        left: ${p => p.selectedNumber * 50}%;
-        width: 50%;
+        left: ${p => p.selectedNumber * 33.3}%;
+        width: 33.3%;
         height: 100%;
         z-index: 1;
         background-color: ${palette.accentColor};

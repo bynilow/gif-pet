@@ -1,16 +1,16 @@
 'use client'
 
 import Container from "@/components/Container/Container";
-import GifCard from "@/components/GifCard/GifCardMedium";
+import GifCard from "@/components/Gif/Cards/GifCardMedium";
 import { palette } from "@/styles/palette";
 import styled from "styled-components";
 import SearchBar from "./gif/Search/SearchBar";
-import GIfCardSmall from "@/components/GifCard/GifCardSmall";
+import GIfCardSmall from "@/components/Gif/Cards/GifCardSmall";
 import { useEffect, useState } from "react";
 import { IGif } from "@/models/IGif";
 import Layout from "react-masonry-list";
 import Loader from "@/components/Loader/Loader";
-import GifCardHOC from "@/components/GifCard/GifCardHOC";
+import GifCardHOC from "@/components/Gif/Cards/GifCardHOC";
 
 export default function Home() {
 
@@ -23,7 +23,6 @@ export default function Home() {
     if(e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop - window.innerHeight) < 1407){
       setIsEndScroll(true);
     }
-    console.log(e.target.documentElement.scrollHeight - (e.target.documentElement.scrollTop - window.innerHeight))
 
   }
 
@@ -50,7 +49,7 @@ export default function Home() {
   }, [])
 
   const [selectedSize, setSelectedSize] = useState<'small' | 'medium' | 'large'>('small');
-
+  console.log(selectedSize)
   return (
     <Main>
       <Container>
@@ -58,15 +57,14 @@ export default function Home() {
           <SearchBar
             onChangeSize={(size: 'small' | 'medium' | 'large') => setSelectedSize(size)} />
           <Masonry 
-            colCount={5}
+            key={selectedSize}
+            selectedSize={selectedSize}
             gap={20}
             items={gifs.map(gif => 
               <GifCardHOC 
-                key={gif.id} 
+                key={gif.id+selectedSize} 
                 size={selectedSize}
-                title={gif.title}
-                id={gif.id} /> )} />
-
+                gif={gif} />)} />
         </MainInner>
         {
           page < 10
@@ -77,11 +75,19 @@ export default function Home() {
   );
 }
 
-const Masonry = styled(Layout)`
+interface IMasonryProps{
+  selectedSize: string;
+}
+
+const Masonry = styled(Layout)<IMasonryProps>`
   margin: 0;
   padding: 0;
 
-  grid-template-columns: repeat(5, minmax(100px, 1fr)) !important;
+  grid-template-columns: repeat(${p => p.selectedSize === 'small' 
+    ? 5 
+    : p.selectedSize === 'medium'
+      ? 3
+      : 2}, minmax(100px, 1fr)) !important;
 `
 
 // const GifList = styled.div`

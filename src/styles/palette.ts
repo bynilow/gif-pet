@@ -6,5 +6,6 @@ export const palette = {
     innerColor: '#2b2b2d',
     accentColor: '#fd356d',
     scrollThumbColor: '#686868',
-    favoriteSymbol: '❤'
+    favoriteSymbol: '❤',
+    checkSymbol: '🗸'
 }

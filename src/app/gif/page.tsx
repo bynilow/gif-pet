@@ -1,23 +1,23 @@
 'use client'
 
 import Container from '@/components/Container/Container';
-import GifCard from '@/components/GifCard/GifCardMedium';
-import { FC } from 'react';
+import GifCard from '@/components/Gif/Cards/GifCardMedium';
+import { FC, useEffect, useState } from 'react';
 import styled from 'styled-components'
 import SearchBar from './Search/SearchBar';
+import TTT from '@/components/ttt/TTT';
 
 interface IGifPageProps {
 
 }
 
-const GifPage: FC<IGifPageProps> = ({}) => {
+const GifPage: FC<IGifPageProps> = ({ }) => {
 
-    return (  
+    return (
         <Gif>
             <Container>
                 <GifInner>
                     <SearchBar />
-
                     <GifList>
                         <GifCard />
                         <GifCard />

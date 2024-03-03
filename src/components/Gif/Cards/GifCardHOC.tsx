@@ -2,24 +2,25 @@ import { FC } from 'react';
 import styled from 'styled-components'
 import GIfCardSmall from './GifCardSmall';
 import GifCardMedium from './GifCardMedium';
+import { IGif } from '@/models/IGif';
+import GifCardLarge from './GifCardLarge';
 
 interface IGifCardHOCProps {
     size: 'small' | 'medium' | 'large';
-    id: string;
-    title: string;
+    gif: IGif;
 }
 
-const GifCardHOC: FC<IGifCardHOCProps> = ({size, id, title}) => {
+const GifCardHOC: FC<IGifCardHOCProps> = ({size, gif}) => {
+
+    console.log(gif)
 
     switch(size){
         case 'small':
-            return <GIfCardSmall
-                id={id}
-                title={title} />
+            return <GIfCardSmall gif={gif} />
         case 'medium':
-            return <GifCardMedium />
+            return <GifCardMedium gif={gif} />
         case 'large':
-            <></>
+            return <GifCardLarge gif={gif} />
     }
 }
 
