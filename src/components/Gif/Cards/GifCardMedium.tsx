@@ -1,3 +1,4 @@
+import FavoriteButton, { Favorite } from '@/components/FavoriteButton/FavoriteButton';
 import { IGif } from '@/models/IGif';
 import { palette } from '@/styles/palette';
 import { FC } from 'react';
@@ -18,9 +19,7 @@ const GifCardMedium: FC<IGifCardMediumProps> = ({gif}) => {
                     : null }
             </UserName>
             <Gif src={`https://i.giphy.com/${gif.id}.webp`} alt='' />
-            <Favorite>
-                {palette.favoriteSymbol}
-            </Favorite>
+            <FavoriteButton id={gif.id} />
             <Title>
                 {gif.title}
             </Title>
@@ -43,23 +42,6 @@ const UserName = styled.div`
     color: ${palette.textColor};
     display: flex;
     gap: 10px;
-`
-
-const Favorite = styled.div`
-    position: absolute;
-    top: 0;
-    right: -20%;
-    margin: 10px;
-    height: fit-content;
-    font-size: 1.5rem;
-    line-height: 0.9;
-    cursor: pointer;
-    transition: color 0.2s;
-    transition: right 0.3s;
-
-    &:hover{
-        color: ${palette.accentColor};
-    }
 `
 
 const Title = styled.p`

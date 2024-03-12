@@ -4,6 +4,7 @@ import { FC } from 'react';
 import styled from 'styled-components'
 import Container from '../Container/Container';
 import { palette } from '@/styles/palette';
+import Link from 'next/link';
 
 interface IHeaderProps {
 
@@ -15,17 +16,51 @@ const Header: FC<IHeaderProps> = ({}) => {
         <Block>
             <Container>
                 <HeaderInner>
-                    header
+                    <Logo>
+                        GIF
+                    </Logo>
+                    <Nav>
+                        <HeaderLink href='/favorite'>
+                            Favorites
+                        </HeaderLink>
+                        <HeaderLink href='/'>
+                            Main
+                        </HeaderLink>
+                    </Nav>
                 </HeaderInner>
             </Container>
         </Block>
     );
 }
 
+const HeaderLink = styled(Link)`
+    font-size: 1rem;
+    text-decoration: none;
+    color: ${palette.textColor};
+    transition: 0.1s;
+
+    &:hover{
+        color: ${palette.accentColor};
+    }
+`
+
+const Nav = styled.nav`
+    display: flex;
+    align-items: center;
+    gap: 15px;
+`
+
+const Logo = styled.div`
+    font-size: 3rem;
+    font-weight: bold;
+    color: ${palette.textColor};
+`
+
 const HeaderInner = styled.div`
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
+    gap: 15px;
     height: 100%;
     font-size: 2rem;
 `

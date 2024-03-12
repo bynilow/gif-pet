@@ -1,3 +1,4 @@
+import FavoriteButton, { Favorite } from '@/components/FavoriteButton/FavoriteButton';
 import { IGif } from '@/models/IGif';
 import { palette } from '@/styles/palette';
 import { FC, useRef, useState } from 'react';
@@ -11,9 +12,7 @@ const GIfCardSmall: FC<IGIfCardSmallProps> = ({gif}) => {
 
     return (  
         <Card>
-            <Favorite>
-                {palette.favoriteSymbol}
-            </Favorite>
+            <FavoriteButton id={gif.id} />
             <Title>
                 {gif.title}
             </Title>
@@ -30,23 +29,6 @@ const Title = styled.div`
     margin: 10px;
     font-size: 1rem;
     transition: bottom 0.2s;
-`
-
-const Favorite = styled.div`
-    position: absolute;
-    top: 0;
-    right: -20%;
-    margin: 10px;
-    font-size: 1.5rem;
-    line-height: 0.9;
-    text-shadow: 0 0 3px black;
-    cursor: pointer;
-    transition: color 0.2s;
-    transition: right 0.3s;
-
-    &:hover{
-        color: ${palette.accentColor};
-    }
 `
 
 const Gif = styled.img`

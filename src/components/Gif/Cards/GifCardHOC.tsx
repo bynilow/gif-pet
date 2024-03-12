@@ -12,8 +12,6 @@ interface IGifCardHOCProps {
 
 const GifCardHOC: FC<IGifCardHOCProps> = ({size, gif}) => {
 
-    console.log(gif)
-
     switch(size){
         case 'small':
             return <GIfCardSmall gif={gif} />

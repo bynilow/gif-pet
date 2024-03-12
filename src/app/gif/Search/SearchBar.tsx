@@ -22,8 +22,11 @@ const SearchBar: FC<ISearchBarProps> = ({onChangeSize}) => {
 }
 
 const Search = styled.div`
+    width: 100%;
     display: flex;
-    gap: 20px;
+    justify-content: start;
+    gap: 15px;
+
 `
 
 export default SearchBar;
